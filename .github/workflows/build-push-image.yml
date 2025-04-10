@@ -21,5 +21,5 @@ jobs:
           push: true
           github-token: ${{ secrets.CUSTOM_TOKEN }} # optional, default is ${{ github.token }}
           tags: |
-            portfoliov4:${{ github.sha }}
-            portfoliov4:latest
+            ghcr.io/danielbutlerismyname/portfoliov4:${{ github.sha }}
+            ghcr.io/danielbutlerismyname/portfoliov4:latest

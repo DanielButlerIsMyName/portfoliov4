@@ -1,8 +1,8 @@
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -15,7 +15,8 @@ jobs:
     services:
       db:
         image: postgres:15
-        ports: 5432:5432
+        ports:
+          - 5432:5432
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -26,36 +27,35 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install Erlang and Elixir manually
-      run: |
-        sudo apt-get update -y
-        sudo add-apt-repository ppa:rabbitmq/rabbitmq-erlang -y
-        sudo apt update -y
-        sudo apt install git elixir erlang -y
+      - name: Install Erlang and Elixir manually
+        run: |
+          sudo apt-get update -y
+          sudo add-apt-repository ppa:rabbitmq/rabbitmq-erlang -y
+          sudo apt update -y
+          sudo apt install git elixir erlang -y
 
-    - name: Wait for Postgres
-      run: |
-        until pg_isready -h localhost -p 5432 -U postgres; do
-          echo "Waiting for Postgres..."
-          sleep 1
-        done
+      - name: Wait for Postgres
+        run: |
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for Postgres..."
+            sleep 1
+          done
 
-    - name: Install dependencies
-      run: mix deps.get
+      - name: Install dependencies
+        run: mix deps.get
 
-    - name: Setup database
-      env:
-        MIX_ENV: test
-        DB_HOST: localhost
-      run: mix setup
+      - name: Setup database
+        env:
+          MIX_ENV: test
+          DB_HOST: localhost
+        run: mix setup
 
-    - name: Run tests
-      env:
-        MIX_ENV: test
-        DB_HOST: localhost
-      run: mix test
+      - name: Run tests
+        env:
+          MIX_ENV: test
+          DB_HOST: localhost
+        run: mix test

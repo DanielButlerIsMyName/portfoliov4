@@ -19,7 +19,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          github-token: ${{ secrets.CUSTOM_TOKEN }} # optional, default is ${{ github.token }}
+          # github-token: ${{ secrets.CUSTOM_TOKEN }} # optional, default is ${{ github.token }}
           tags: |
             ghcr.io/danielbutlerismyname/portfoliov4:${{ github.sha }}
             ghcr.io/danielbutlerismyname/portfoliov4:latest

@@ -19,6 +19,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
+          github-token: ${{ secrets.CUSTOM_TOKEN }} # optional, default is ${{ github.token }}
           tags: |
             portfoliov4:${{ github.sha }}
             portfoliov4:latest

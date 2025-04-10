@@ -12,6 +12,21 @@ jobs:
     name: Build and test
     runs-on: ubuntu-latest
 
+    services:
+      db:
+        image: postgres:15
+        ports: [5432:5432]
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: portfoliov4_dev
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -23,13 +38,24 @@ jobs:
         sudo apt update -y
         sudo apt install git elixir erlang -y
 
-    - name: Check versions
+    - name: Wait for Postgres
       run: |
-        elixir -v
-        erl -version
+        until pg_isready -h localhost -p 5432 -U postgres; do
+          echo "Waiting for Postgres..."
+          sleep 1
+        done
 
     - name: Install dependencies
       run: mix deps.get
 
+    - name: Setup database
+      env:
+        MIX_ENV: test
+        DB_HOST: localhost
+      run: mix setup
+
     - name: Run tests
+      env:
+        MIX_ENV: test
+        DB_HOST: localhost
       run: mix test

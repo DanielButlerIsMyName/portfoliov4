@@ -1,3 +1,5 @@
+name: build-test-elixir
+
 on:
   push:
     branches: ["main"]

@@ -17,7 +17,7 @@ defmodule Portfoliov4Web.Router do
   scope "/", Portfoliov4Web do
     pipe_through :browser
 
-    get "/", PageController, :home
+    get "/", HomeController, :hero
   end
 
   # Other scopes may use custom stacks.

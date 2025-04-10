@@ -13,13 +13,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3.4.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.CUSTOM_TOKEN }}
+
       - name: Build and push Docker images
         uses: docker/build-push-action@v6.15.0
         with:
           context: .
           file: Dockerfile
           push: true
-          # github-token: ${{ secrets.CUSTOM_TOKEN }} # optional, default is ${{ github.token }}
           tags: |
             ghcr.io/danielbutlerismyname/portfoliov4:${{ github.sha }}
             ghcr.io/danielbutlerismyname/portfoliov4:latest
+          # github-token: ${{ secrets.CUSTOM_TOKEN }} # optional, default is ${{ github.token }}

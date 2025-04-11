@@ -5,21 +5,17 @@ metadata:
   namespace: portfoliov4
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # Turn off SSL redirection since no certificate is used
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - 37.156.41.23
-      secretName: phoenix-tls
   rules:
-    - host: 37.156.41.23
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: phoenix-service
-                port:
-                  number: 80
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: phoenix-service
+            port:
+              number: 80

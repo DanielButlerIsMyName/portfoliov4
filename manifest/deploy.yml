@@ -127,6 +127,8 @@ spec:
                   key: password
             - name: POSTGRES_DB
               value: "portfoliov4_prod"
+            - name: PGDATA
+              value: "/var/lib/postgresql/data/pgdata"
           volumeMounts:
             - name: postgres-pv
               mountPath: /var/lib/postgresql/data

@@ -14,9 +14,7 @@ spec:
       labels:
         app: phoenix-app
     spec:
-      imagePullSecrets:
-      - name: ghcr-secret
-      containers:
+     containers:
       - name: phoenix-container
         image: ghcr.io/danielbutlerismyname/portfoliov4:latest
         imagePullPolicy: Always

@@ -20,12 +20,11 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 4000
-          env:
-            - name: DATABASE_URL
-              value: postgres://postgres:postgres@postgres:5432/portfoliov4_prod
-            - name: SECRET_KEY_BASE
-              value: "QKdqV7HSTcVQzwOu7sl9v3CIvpCLDQdaSc5TzJGccNL13ABGUIsRLkyOiSzSN9gu"
----
+        env:
+        - name: DATABASE_URL
+          value: postgres://postgres:postgres@postgres:5432/portfoliov4_prod
+        - name: SECRET_KEY_BASE
+          value: "QKdqV7HSTcVQzwOu7sl9v3CIvpCLDQdaSc5TzJGccNL13ABGUIsRLkyOiSzSN9gu"
 apiVersion: v1
 kind: Service
 metadata:

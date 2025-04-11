@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phoenix-app
+  labels:
+    app: phoenix-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: phoenix-app
+  template:
+    metadata:
+      labels:
+        app: phoenix-app
+    spec:
+      imagePullSecrets:
+      - name: ghcr-secret
+      containers:
+      - name: phoenix-container
+        image: ghcr.io/danielbutlerismyname/portfoliov4:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4000
+        env:
+        - name: DATABASE_URL
+          value: postgres://postgres:postgres@postgres:5432/portfoliov4_prod
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phoenix-service
+spec:
+  selector:
+    app: phoenix-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 4000
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+        env:
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: POSTGRES_DB
+            value: portfoliov4_prod
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
+
